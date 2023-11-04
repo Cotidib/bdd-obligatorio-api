@@ -11,6 +11,7 @@ services:
     volumes:
       - datafiles:/var/lib/mysql
       #Corre script sql de inicializacion. Corre una sola vez cuando se inicializa sql y se crea el volumen
+      #Si se hacen cambios en el archivo init-db, borrar el contenedor y su volumen desde docker desktop y levantar todo de nuevo
       - "./sql-scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql"
     #Specify Environment Variables for mysql
     environment: 
