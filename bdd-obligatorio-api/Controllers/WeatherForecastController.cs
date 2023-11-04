@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using MySqlConnector;
+using System;
 
 namespace bdd_obligatorio_api.Controllers
 {
@@ -6,28 +8,33 @@ namespace bdd_obligatorio_api.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+        private IConfiguration _config;
+        private MySqlConnection _conn;
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(IConfiguration config, ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
+            _config = config;
+            _conn = new MySqlConnection(config.GetConnectionString("Default"));
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<WeatherForecast>> Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            await _conn.OpenAsync();
+            // Retrieve all rows
+            using var command = new MySqlCommand("SELECT name FROM Weather", _conn);
+            using var reader = await command.ExecuteReaderAsync();
+
+            List<WeatherForecast> weathers = new List<WeatherForecast> { };
+            while (await reader.ReadAsync())
+                {
+                weathers.Add(new WeatherForecast(reader.GetString(0)));
+                }
+
+            return weathers;
         }
     }
 }
