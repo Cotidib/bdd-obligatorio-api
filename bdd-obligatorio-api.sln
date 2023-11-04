@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bdd-obligatorio-api", "bdd-obligatorio-api\bdd-obligatorio-api.csproj", "{1FDCD0E1-1E2B-4C0E-97C8-7DFB11CD829C}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{A63EE614-FECE-4EEC-8352-9953F6EFF72A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sql-scripts", "sql-scripts", "{7D9F6052-DFF1-4E59-AF9D-23F505D8AC08}"
+	ProjectSection(SolutionItems) = preProject
+		init-db.sql = init-db.sql
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1FDCD0E1-1E2B-4C0E-97C8-7DFB11CD829C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FDCD0E1-1E2B-4C0E-97C8-7DFB11CD829C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FDCD0E1-1E2B-4C0E-97C8-7DFB11CD829C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FDCD0E1-1E2B-4C0E-97C8-7DFB11CD829C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A63EE614-FECE-4EEC-8352-9953F6EFF72A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A63EE614-FECE-4EEC-8352-9953F6EFF72A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A63EE614-FECE-4EEC-8352-9953F6EFF72A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A63EE614-FECE-4EEC-8352-9953F6EFF72A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2E29BEF2-0871-4C6C-AE95-4C8D414DB0F6}
+	EndGlobalSection
+EndGlobal
