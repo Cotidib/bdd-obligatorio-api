@@ -15,3 +15,14 @@ INSERT INTO obligatoriodb.Weather (wid, name) VALUES
 	(8, 'Hot'),
 	(9, 'Sweltering'),
 	(10, 'Scorching');
+
+CREATE TABLE obligatoriodb.Funcionarios (
+	Ci INT NOT NULL,
+	Email VARCHAR(30) NOT NULL,
+	PRIMARY KEY (Ci)
+);
+
+CREATE TABLE obligatoriodb.Carnet_Salud (
+	Ci INT NOT NULL,
+	FOREIGN KEY (Ci) REFERENCES Funcionarios(Ci)
+);
