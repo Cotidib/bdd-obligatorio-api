@@ -43,13 +43,23 @@ CREATE TABLE obligatoriodb.Agenda (
 	FOREIGN KEY (Ci) REFERENCES Funcionarios(Ci)
 );
 
+CREATE TABLE obligatoriodb.Comprobante (
+	Cid INT NOT NULL,
+	Nombre VARCHAR(30) NOT NULL,
+	Contenido LONGBLOB NOT NULL,
+	Tipo VARCHAR(10),
+	PRIMARY KEY (Cid)
+);
+
 CREATE TABLE obligatoriodb.Carnet_Salud (
 	Ci INT NOT NULL,
 	Fch_Emision DATE NOT NULL,
 	Fch_Vencimiento DATE NOT NULL,
-	Comprobante VARCHAR(100),
+	Comprobante INT,
+	FOREIGN KEY (Comprobante) REFERENCES Comprobante(Cid)
 	FOREIGN KEY (Ci) REFERENCES Funcionarios(Ci)
 );
+
 
 CREATE TABLE obligatoriodb.Periodos_Actualizacion(
 	Año YEAR NOT NULL,

@@ -25,6 +25,7 @@ namespace bdd_obligatorio_api.Controllers
         {
             await _conn.OpenAsync();
             // Retrieve all rows
+            // REFERENCIA LIBRERIA MYSQL CONNECTOR https://mysqlconnector.net/tutorials/connect-to-mysql/
             using var command = new MySqlCommand("SELECT name FROM Weather", _conn);
             using var reader = await command.ExecuteReaderAsync();
 
