@@ -26,3 +26,10 @@ CREATE TABLE obligatoriodb.Carnet_Salud (
 	Ci INT NOT NULL,
 	FOREIGN KEY (Ci) REFERENCES Funcionarios(Ci)
 );
+
+CREATE TABLE obligatoriodb.Periodos_Actualizacion(
+	Año YEAR NOT NULL,
+	Semestre INT NOT NULL,
+	Fch_Inicio DATE NOT NULL,
+	Fch_Fin DATE NOT NULL
+);
