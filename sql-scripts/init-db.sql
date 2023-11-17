@@ -30,7 +30,7 @@ CREATE TABLE obligatoriodb.Funcionarios (
 	Fch_Nacimiento DATE,
 	Direccion VARCHAR(60),
 	Telefono INT,
-	Logid INT NOT NULL,
+	Logid VARCHAR(30) NOT NULL,
 	PRIMARY KEY (Ci),
 	FOREIGN KEY (Logid) REFERENCES Logins(Logid)
 );
@@ -38,7 +38,7 @@ CREATE TABLE obligatoriodb.Funcionarios (
 CREATE TABLE obligatoriodb.Agenda (
 	Nro INT NOT NULL,
 	Ci INT NOT NULL,
-	Fch_Agenda DATE TIME NOT NULL,
+	Fch_Agenda DATETIME NOT NULL,
 	PRIMARY KEY (Nro),
 	FOREIGN KEY (Ci) REFERENCES Funcionarios(Ci)
 );
@@ -56,7 +56,7 @@ CREATE TABLE obligatoriodb.Carnet_Salud (
 	Fch_Emision DATE NOT NULL,
 	Fch_Vencimiento DATE NOT NULL,
 	Comprobante INT,
-	FOREIGN KEY (Comprobante) REFERENCES Comprobante(Cid)
+	FOREIGN KEY (Comprobante) REFERENCES Comprobante(Cid),
 	FOREIGN KEY (Ci) REFERENCES Funcionarios(Ci)
 );
 
