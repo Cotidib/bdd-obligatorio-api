@@ -1,0 +1,36 @@
+<!-- Agrega el siguiente código al archivo formulariopersona.component.html -->
+
+<form class="container mt-5">
+    <div class="mb-3">
+      <label for="ci" class="form-label">CI:</label>
+      <input type="text" id="ci" name="ci" class="form-control" [(ngModel)]="ci" required>
+    </div>
+  
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre Completo:</label>
+      <input type="text" id="nombre" name="nombre" class="form-control" [(ngModel)]="nombre" required>
+    </div>
+  
+    <div class="mb-3">
+      <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
+      <input type="date" id="fechaNacimiento" name="fechaNacimiento" class="form-control" [(ngModel)]="fechaNacimiento" required>
+    </div>
+  
+    <div class="mb-3 form-check">
+      <input type="checkbox" id="tieneCarneSalud" name="tieneCarneSalud" class="form-check-input" [(ngModel)]="tieneCarneSalud">
+      <label class="form-check-label" for="tieneCarneSalud">¿Tiene carné de Salud?</label>
+    </div>
+  
+    <div *ngIf="tieneCarneSalud" class="mb-3">
+      <label for="fechaVencimiento" class="form-label">Fecha de Vencimiento:</label>
+      <input type="date" id="fechaVencimiento" name="fechaVencimiento" class="form-control" [(ngModel)]="fechaVencimiento" required>
+    </div>
+  
+    <div *ngIf="tieneCarneSalud" class="mb-3">
+      <label for="comprobante" class="form-label">Comprobante (JPG o PDF):</label>
+      <input type="file" id="comprobante" name="comprobante" class="form-control" accept=".jpg, .pdf" (change)="onFileChange($event)" required>
+    </div>
+  
+    <button type="submit" class="btn btn-primary" (click)="submitForm()">Enviar</button>
+  </form>
+  
