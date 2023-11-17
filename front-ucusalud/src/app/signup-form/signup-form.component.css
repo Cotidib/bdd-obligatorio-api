@@ -1,0 +1,53 @@
+/* styles.css */
+
+/* Estilos adicionales para el formulario */
+.container {
+    max-width: 600px;
+  }
+  
+  /* Márgenes para elementos dentro del formulario */
+  .mb-3 {
+    margin-bottom: 15px;
+  }
+  
+  /* Espaciado adicional en la parte superior del formulario */
+  .mt-5 {
+    margin-top: 50px;
+  }
+  
+  /* Estilo para el botón de enviar */
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  /* Cambio de color al pasar el ratón sobre el botón */
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
+  /* Ajuste de tamaño para la etiqueta de checkbox */
+  .form-check-label {
+    padding-left: 1.25rem; /* Alineación con el checkbox */
+  }
+  
+  /* Ajuste de estilo para el checkbox */
+  .form-check-input {
+    margin-top: 0.25rem;
+  }
+  
+  /* Estilo para los mensajes de validación de formulario */
+  .ng-valid[required], .ng-valid.required  {
+    border-color: #28a745; /* Borde verde para campos válidos */
+  }
+  
+  .ng-invalid:not(form)  {
+    border-color: #dc3545; /* Borde rojo para campos inválidos */
+  }
+  
+  /* Cambio de color del fondo al pasar el ratón sobre el campo de archivo */
+  input[type="file"]:hover {
+    background-color: #f8f9fa;
+  }
+  
