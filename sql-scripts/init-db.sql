@@ -16,7 +16,7 @@ INSERT INTO obligatoriodb.Weather (wid, name) VALUES
 	(9, 'Sweltering'),
 	(10, 'Scorching');
 
-CREATE TABLE obligatoriodb.Logins(
+CREATE TABLE obligatoriodb.Logins (
 	Logid VARCHAR(30) NOT NULL,
 	Pwd VARCHAR(100) NOT NULL,
 	PRIMARY KEY (Logid)
@@ -61,8 +61,8 @@ CREATE TABLE obligatoriodb.Carnet_Salud (
 );
 
 
-CREATE TABLE obligatoriodb.Periodos_Actualizacion(
-	Año YEAR NOT NULL,
+CREATE TABLE obligatoriodb.Periodos_Actualizacion (
+	Año INT NOT NULL,
 	Semestre INT NOT NULL,
 	Fch_Inicio DATE NOT NULL,
 	Fch_Fin DATE NOT NULL
