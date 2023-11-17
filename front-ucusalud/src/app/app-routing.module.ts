@@ -6,6 +6,7 @@ import { SignupFormComponent } from './signup-form/signup-form.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },  // Ruta por defecto
+  //{ path '*', AUTENTICACION},
   { path: 'registered-form', component: RegisteredFormComponent },
   { path: 'signup-form', component: SignupFormComponent }
 ];
