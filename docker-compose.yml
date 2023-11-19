@@ -19,6 +19,16 @@ services:
       MYSQL_USER: bdduser
       MYSQL_PASSWORD: bdd1234
       MYSQL_DATABASE: obligatoriodb
+  bdd-obligatorio-cron:
+    image: ${DOCKER_REGISTRY-}bddobligatoriocronjob
+    build:
+      context: ./bdd-obligatorio-cronjob
+      dockerfile: Dockerfile
+    #This Service Depends on the database service specifed above
+    depends_on: 
+        - database
+    environment: 
+      - DBHOST=database
   bdd-obligatorio-api:
     image: ${DOCKER_REGISTRY-}bddobligatorioapi
     build:
