@@ -62,7 +62,7 @@ CREATE TABLE obligatoriodb.Carnet_Salud (
 
 
 CREATE TABLE obligatoriodb.Periodos_Actualizacion (
-	Año INT NOT NULL,
+	Anio INT NOT NULL,
 	Semestre INT NOT NULL,
 	Fch_Inicio DATE NOT NULL,
 	Fch_Fin DATE NOT NULL
