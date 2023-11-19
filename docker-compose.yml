@@ -16,9 +16,9 @@ services:
     #Specify Environment Variables for mysql
     environment: 
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: bdduser
-      MYSQL_PASSWORD: bdd1234
-      MYSQL_DATABASE: obligatoriodb
+      MYSQL_USER: ${DBUSER}
+      MYSQL_PASSWORD: ${DBPASSWORD}
+      MYSQL_DATABASE: ${DB}
   bdd-obligatorio-cron:
     image: ${DOCKER_REGISTRY-}bddobligatoriocronjob
     build:
@@ -28,7 +28,14 @@ services:
     depends_on: 
         - database
     environment: 
-      - DBHOST=database
+      DBHOST: ${DBHOST}
+      DBUSER: ${DBUSER}
+      DBPASSWORD: ${DBPASSWORD}
+      DB: ${DB}
+      SSL_PORT: ${SSL_PORT}
+      SMTP_SERVER: ${SMTP_SERVER}
+      SENDER_EMAIL: ${SENDER_EMAIL}
+      SENDER_PWD: ${SENDER_PWD}
   bdd-obligatorio-api:
     image: ${DOCKER_REGISTRY-}bddobligatorioapi
     build:

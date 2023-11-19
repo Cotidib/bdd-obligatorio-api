@@ -3,22 +3,23 @@
 
 import mysql.connector
 import smtplib, ssl
+import os
 
 def test():
     print("Ejecutando scheduled email")
 
 def send_emails():
     config = {
-    'user': 'bdduser',
-    'password': 'bdd1234',
-    'host': 'database',
-    'database': 'obligatoriodb'
+    'user': os.environ['DBUSER'],
+    'password': os.environ['DBPASSWORD'],
+    'host': os.environ['DBHOST'],
+    'database': os.environ['DB']
     }
 
-    port = 465  # SSL
-    smtp_server = "smtp.gmail.com"
-    sender_email = "leonardomilagrosconstanza@gmail.com"
-    password = "cfjs tvhg buko bkwp"
+    port = os.environ['SSL_PORT']  # SSL
+    smtp_server = os.environ['SMTP_SERVER']
+    sender_email = os.environ['SENDER_EMAIL']
+    password = os.environ['SENDER_PWD']
     message = """\
     Subject: Obligatorio BdD
     Recordatorio de rellenar el formulario."""
