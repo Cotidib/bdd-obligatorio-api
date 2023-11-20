@@ -13,7 +13,7 @@ namespace bdd_obligatorio_api.Repositories
             _connection = connection;
         }
 
-        public Funcionario GetFuncionarioByCi(string ci)
+        public Funcionario GetFuncionarioByCi(int ci)
         {
             _connection.Open();
 

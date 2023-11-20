@@ -3,7 +3,7 @@ namespace bdd_obligatorio_api.Repositories;
 
 public interface IFuncionarioRepository
 {
-    Funcionario GetFuncionarioByCi(string ci);
+    Funcionario GetFuncionarioByCi(int ci);
     void AddFuncionario(Funcionario funcionario);
     // Otros métodos necesarios
 }
@@ -24,5 +24,11 @@ public interface IPeriodoActualizacionRepository
 {
     Periodo_Actualizacion GetPeriodoActual();
     void UpdatePeriodoActual(Periodo_Actualizacion periodo);
+    // Otros métodos necesarios
+}
+public interface ILoginRepository
+{
+    Login GetLoginById(int logId);
+    void AddLogin(Login login);
     // Otros métodos necesarios
 }
