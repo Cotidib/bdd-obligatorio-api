@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Http;
+/*using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using System;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 Hay que modificar este código
 
 
-*/
+
 [ApiController]
 [Route("api/archivos")]
 public class ArchivosController : ControllerBase
@@ -55,4 +55,4 @@ public class ArchivosController : ControllerBase
             return StatusCode(500, new { mensaje = $"Error al subir el archivo: {ex.Message}" });
         }
     }
-}
+}*/
