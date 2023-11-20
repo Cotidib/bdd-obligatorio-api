@@ -12,7 +12,7 @@ namespace bdd_obligatorio_api.Repositories
             _connection = connection;
         }
 
-        public Login GetLoginById(int logId)
+        public Login GetLoginById(string logId)
         {
             _connection.Open();
 

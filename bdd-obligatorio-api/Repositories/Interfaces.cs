@@ -28,7 +28,7 @@ public interface IPeriodoActualizacionRepository
 }
 public interface ILoginRepository
 {
-    Login GetLoginById(int logId);
+    Login GetLoginById(string logId);
     void AddLogin(Login login);
     // Otros métodos necesarios
 }
