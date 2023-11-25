@@ -1,0 +1,50 @@
+.container-fluid {
+    padding: 20px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.col-md-6 {
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+}
+
+.Register-btn {
+    background-color: #3498db;
+}
+
+.Register-btn:hover {
+    background-color: #2980b9;
+}
+
+.Login-btn {
+    background-color: #2ecc71;
+}
+
+.Login-btn:hover {
+    background-color: #27ae60;
+}
+
+form {
+    margin-top: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}

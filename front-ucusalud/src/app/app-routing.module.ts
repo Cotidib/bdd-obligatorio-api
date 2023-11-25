@@ -3,16 +3,33 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisteredFormComponent } from './registered-form/registered-form.component';
 import { SignupFormComponent } from './signup-form/signup-form.component';
+import { LoginScreenComponent } from './login-screen/login-screen.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
-  { path: '', component: DashboardComponent },  // Ruta por defecto
-  //{ path '*', AUTENTICACION},
-  { path: 'registered-form', component: RegisteredFormComponent },
-  { path: 'signup-form', component: SignupFormComponent }
+  { path: 'login', title: 'Autenticación', component: LoginScreenComponent },
+  {
+    path: '', redirectTo: '/dashboard', pathMatch: 'full',
+  },
+  {
+    path: 'dashboard', title: 'Dashboard', component: DashboardComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'registered-form', title: 'Formulario', component: RegisteredFormComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'signup-form', title: 'Formulario Signup', component: SignupFormComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: '**', title: 'No encontrado :(', component: PageNotFoundComponent },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), HttpClientModule],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

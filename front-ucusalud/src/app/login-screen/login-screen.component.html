@@ -1,0 +1,43 @@
+<div class="container-fluid">
+    <div class="row">
+      <!-- Lado Izquierdo - Register -->
+      <div class="col-md-6 Register-btn" (click)="showRegisterForm()">
+        Register
+      </div>
+  
+      <!-- Lado Derecho - Login -->
+      <div class="col-md-6 Login-btn" (click)="showLoginForm()">
+        Login
+      </div>
+    </div>
+  
+    <!-- Formulario para Register -->
+    <div *ngIf="showRegister" class="row">
+      <div class="col-md-6 offset-md-3">
+        <!-- Aquí va el formulario para Register -->
+        <form>
+          <!-- Campos para usuario y contraseña -->
+          <input type="text" placeholder="Usuario" [(ngModel)]="username" [ngModelOptions]="{standalone: true}">
+          <input type="password" placeholder="Contraseña" [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
+          
+          <!-- Botón de login -->
+          <button class="col-md-6 Register-btn" type="button" (click)="Register()">Registro</button>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Formulario para Login -->
+    <div *ngIf="showLogin" class="row">
+      <div class="col-md-6 offset-md-3">
+        <!-- Aquí va el formulario para Login -->
+        <form>
+          <input type="text" placeholder="Usuario" [(ngModel)]="username" [ngModelOptions]="{standalone: true}">
+          <input type="password" placeholder="Contraseña" [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
+          
+          <!-- Botón de Login -->
+          <button class="col-md-6 Login-btn" type="button" (click)="Login()">Ingresar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  

@@ -8,13 +8,19 @@ import { RegisteredFormComponent } from './registered-form/registered-form.compo
 import { FormsModule } from '@angular/forms';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SignupFormComponent } from './signup-form/signup-form.component';
+import { LoginScreenComponent } from './login-screen/login-screen.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AuthinterceptorService } from './authinterceptor.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisteredFormComponent,
     DashboardComponent,
-    SignupFormComponent
+    SignupFormComponent,
+    LoginScreenComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -22,7 +28,12 @@ import { SignupFormComponent } from './signup-form/signup-form.component';
     FormsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [AuthinterceptorService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthinterceptorService,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
