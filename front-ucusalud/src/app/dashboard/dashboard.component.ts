@@ -6,9 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
-  constructor() { }
 
-  ngOnInit(): void {
-    // Puedes agregar lógica de inicialización aquí si es necesario
-  }
 }

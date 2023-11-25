@@ -67,3 +67,9 @@ CREATE TABLE obligatoriodb.Periodos_Actualizacion (
 	Fch_Inicio DATE NOT NULL,
 	Fch_Fin DATE NOT NULL
 );
+
+CREATE TABLE `Users` (
+  `Username` varchar(50) NOT NULL,
+  `Password` varchar(50) NOT NULL,
+  `Id` varchar(50) NOT NULL
+)
