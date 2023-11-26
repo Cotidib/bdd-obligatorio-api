@@ -7,8 +7,13 @@
     </div>
 
     <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre Completo:</label>
+        <label for="nombre" class="form-label">Nombre:</label>
         <input type="text" id="nombre" name="nombre" class="form-control" [(ngModel)]="nombre" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="apellido" class="form-label">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" class="form-control" [(ngModel)]="apellido" required>
     </div>
 
     <div class="mb-3">
@@ -37,6 +42,11 @@
             [(ngModel)]="tieneCarneSalud">
         <label class="form-check-label" for="tieneCarneSalud">¿Tiene carné de Salud?</label>
     </div>
+
+    <div *ngIf="tieneCarneSalud" class="mb-3">
+        <label for="fechaEmision" class="form-label">Fecha de Emision:</label>
+        <input type="date" id="fechaEmision" name="fechaEmision" class="form-control" [(ngModel)]="fechaEmision" required>
+      </div>
 
     <div *ngIf="tieneCarneSalud" class="mb-3">
         <label for="fechaVencimiento" class="form-label">Fecha de Vencimiento:</label>

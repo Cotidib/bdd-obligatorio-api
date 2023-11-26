@@ -23,7 +23,7 @@ namespace bdd_obligatorio_api.Middleware
 
             if (path.Equals("/login") || path.Equals("/register"))
             {
-                Console.WriteLine("Se está accediendo a",path);
+                Console.WriteLine("Se está accediendo a", path);
                 await next.Invoke(context);
                 return;
             }
@@ -31,7 +31,7 @@ namespace bdd_obligatorio_api.Middleware
             var authHeader = context.Request.Headers["Authorization"];
             Console.WriteLine(authHeader);
             var token = authHeader.ToString().Split(' ')[1];
-            Console.WriteLine("Token sacado por Invoke:",token);
+            Console.WriteLine("Token sacado por Invoke:", token);
             if (token == null)
             {
                 context.Response.StatusCode = 401;
@@ -56,6 +56,19 @@ namespace bdd_obligatorio_api.Middleware
 
                 // Aquí puedes acceder a la información del usuario a través de 'principal'
                 context.Items["user"] = principal;
+
+                // Mostrar información en la consola
+                Console.WriteLine("Nombre de usuario: " + principal.Identity.Name);
+
+                // Mostrar todas las identidades y reclamaciones
+                foreach (var identity in principal.Identities)
+                {
+                    Console.WriteLine("Identity: " + identity.Name);
+                    foreach (var claim in identity.Claims)
+                    {
+                        Console.WriteLine($"   {claim.Type}: {claim.Value}");
+                    }
+                }
 
                 await next.Invoke(context);
             }

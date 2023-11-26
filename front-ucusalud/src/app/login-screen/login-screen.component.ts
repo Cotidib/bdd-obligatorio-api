@@ -33,7 +33,6 @@ export class LoginScreenComponent {
   Register() {
     console.log('Register:', this.username, this.password);
     if (this.username && this.password) {
-      this.router.navigateByUrl('/dashboard');
       this.loginService.register(this.username, this.password)
         .pipe(
           catchError((error) => {
@@ -55,7 +54,6 @@ export class LoginScreenComponent {
   Login() {
     console.log('LoginING:', this.username, 'Name:', this.password);
     if (this.username && this.password) {
-      //this.router.navigateByUrl('/dashboard');
       this.loginService.login(this.username, this.password)
         .pipe(
           catchError((error) => {
@@ -65,7 +63,7 @@ export class LoginScreenComponent {
         .subscribe({
           next: (res: any) => {
             console.log("logged in");
-            this.router.navigateByUrl('/adminlogin-screen');
+            this.router.navigateByUrl('/signup-form');
           },
           error: (err: any) => {
             console.log(err);
