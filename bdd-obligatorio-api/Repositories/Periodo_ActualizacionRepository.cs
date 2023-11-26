@@ -38,15 +38,15 @@ namespace bdd_obligatorio_api.Repositories
         {
             _connection.Open();
 
-            using var command = new MySqlCommand("INSERT INTO Periodos_Actualizacion (Año, Semestre, Fch_Inicio, Fch_Fin) VALUES (@Año, @Semestre, @Fch_Inicio, @Fch_Fin)", _connection);
+            using var command = new MySqlCommand("UPDATE Periodos_Actualizacion SET Fch_Inicio = @Fch_Inicio, Fch_Fin = @Fch_Fin WHERE Año = @Anio AND Semestre = @Semestre", _connection);
             command.Parameters.AddWithValue("@Anio", periodo.Anio);
             command.Parameters.AddWithValue("@Semestre", periodo.Semestre);
-            // Otros campos
+            command.Parameters.AddWithValue("@Fch_Inicio", periodo.Fch_Inicio);
+            command.Parameters.AddWithValue("@Fch_Fin", periodo.Fch_Fin);
 
             command.ExecuteNonQuery();
 
             _connection.Close();
         }
-        // Otros métodos necesarios
     }
 }
