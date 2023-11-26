@@ -1,5 +1,3 @@
-<!-- Agrega el siguiente código al archivo formulariopersona.component.html -->
-
 <form class="container mt-5">
     <div class="mb-3">
         <label for="ci" class="form-label">CI:</label>
@@ -23,7 +21,7 @@
 
     <div class="mb-3">
         <label for="email" class="form-label">Correo electrónico:</label>
-        <input type="text" id="email" name="email" class="form-control" [(ngModel)]="email" required>
+        <input type="text" id="email" name="email" class="form-control" [(ngModel)]="email" required email>
     </div>
 
     <div class="mb-3">
@@ -45,20 +43,24 @@
 
     <div *ngIf="tieneCarneSalud" class="mb-3">
         <label for="fechaEmision" class="form-label">Fecha de Emision:</label>
-        <input type="date" id="fechaEmision" name="fechaEmision" class="form-control" [(ngModel)]="fechaEmision" required>
-      </div>
+        <input type="date" id="fechaEmision" name="fechaEmision" class="form-control" [(ngModel)]="fechaEmision">
+    </div>
 
     <div *ngIf="tieneCarneSalud" class="mb-3">
         <label for="fechaVencimiento" class="form-label">Fecha de Vencimiento:</label>
         <input type="date" id="fechaVencimiento" name="fechaVencimiento" class="form-control"
-            [(ngModel)]="fechaVencimiento" required>
+            [(ngModel)]="fechaVencimiento">
     </div>
 
     <div *ngIf="tieneCarneSalud" class="mb-3">
         <label for="comprobante" class="form-label">Comprobante (JPG o PDF):</label>
         <input type="file" id="comprobante" name="comprobante" class="form-control" accept=".jpg, .pdf"
-            (change)="onFileChange($event)" required>
+            (change)="onFileChange($event)">
     </div>
 
-    <button type="submit" class="btn btn-primary" (click)="submitForm()">Enviar</button>
+    <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+    </div>
+
+    <button type="submit" class="btn btn-primary" (click)="submitForm()" [disabled]="!formulario.valid">Enviar</button>
 </form>

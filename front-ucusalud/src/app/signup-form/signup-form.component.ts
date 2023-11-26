@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsService } from '../forms.service';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-signup-form',
@@ -8,7 +9,24 @@ import { FormsService } from '../forms.service';
 })
 export class SignupFormComponent {
 
-  constructor(private formsService: FormsService) { }
+  currentDate: Date;
+
+  formulario: FormGroup;
+
+  constructor(private formsService: FormsService, private fb: FormBuilder) {
+    this.currentDate = new Date();
+    this.formulario = this.fb.group({
+      //ci: ['', Validators.required],
+      //nombre: ['', [Validators.minLength(3), Validators.maxLength(50)]],
+      // apellido: ['', [Validators.minLength(3), Validators.maxLength(50)]],
+      // domicilio: ['', [Validators.minLength(3), Validators.maxLength(50)]],
+      // email: ['', [Validators.required, Validators.email]],
+      // telefono: ['', Validators.required],
+      // fechaNacimiento: ['', Validators.required]
+    });
+  }
+
+  errorMessage: string | null = null;
 
   ci!: string;
   nombre!: string;
@@ -24,6 +42,15 @@ export class SignupFormComponent {
 
   onFileChange(event: any) {
     this.comprobante = event.target.files[0];
+    if (this.comprobante) {
+      const allowedExtensions = ['.jpg', '.jpeg', '.pdf'];
+      const fileExtension = this.comprobante.name.toLowerCase().slice((Math.max(0, this.comprobante.name.lastIndexOf(".")) || Infinity) + 1);
+
+      if (allowedExtensions.indexOf(`.${fileExtension}`) === -1) {
+        console.log('Tipo de archivo no permitido.');
+        return;
+      }
+    }
   }
 
   submitForm() {
@@ -41,14 +68,17 @@ export class SignupFormComponent {
       email: this.email,
       telefono: this.telefono
     }
+
+    if(this.tieneCarneSalud == false || this.fechaVencimiento <= this.currentDate){
+      
+    }
     this.formsService.signupForm(datosFormulario).subscribe({
       next: (response) => {
         console.log('Registro exitoso:', response);
-        // Aquí puedes manejar la respuesta del backend, como redirigir a otra página, mostrar un mensaje, etc.
       },
       error: (error) => {
         console.error('Error en el registro:', error);
-        // Manejar el error, como mostrar un mensaje de error al usuario
+        this.errorMessage = 'Se produjo un error durante el registro. Por favor, inténtalo de nuevo más tarde.';
       }
     });
   }

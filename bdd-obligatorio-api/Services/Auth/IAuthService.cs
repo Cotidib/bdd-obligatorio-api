@@ -10,6 +10,6 @@ namespace bdd_obligatorio_api.Services
     {
         Task<bool> RegisterUser(User user);
         Task<bool> GetUser(string id);
-        Task<User?> LoginUser(string Username, string Password);
+        Task<User?> LoginUser(string Username);
     }
 }

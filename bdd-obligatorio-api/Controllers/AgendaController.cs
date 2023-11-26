@@ -1,13 +1,13 @@
 using bdd_obligatorio_api.Models;
 using bdd_obligatorio_api.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace bdd_obligatorio_api.Controllers
 {
-    
     [ApiController]
-    [Route("api/agendas")]
+    [Route("[controller]")]
     public class AgendaController : ControllerBase
     {
         private readonly IAgendaRepository _agendaRepository;
@@ -16,9 +16,9 @@ namespace bdd_obligatorio_api.Controllers
         {
             _agendaRepository = agendaRepository;
         }
-
-        [HttpPost]
-        public IActionResult AddAgenda([FromBody] Agenda agenda)
+        [Authorize]
+        [HttpPost("/agenda")]
+        public IActionResult AddAgenda([FromForm] Agenda agenda)
         {
             try
             {

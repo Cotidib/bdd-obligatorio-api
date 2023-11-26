@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using bdd_obligatorio_api.Middleware;
 using System.Security.Claims;
+using bdd_obligatorio_api.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddScoped<IAgendaRepository, AgendaRepository>();
 builder.Services.AddTransient<JwtAuthenticationMiddleware>();
 
 

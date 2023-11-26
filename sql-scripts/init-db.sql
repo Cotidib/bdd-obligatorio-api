@@ -36,7 +36,7 @@ CREATE TABLE obligatoriodb.Funcionarios (
 );
 
 CREATE TABLE obligatoriodb.Agenda (
-	Nro INT NOT NULL,
+	Nro INT AUTO_INCREMENT,
 	Ci INT NOT NULL,
 	Fch_Agenda DATETIME NOT NULL,
 	PRIMARY KEY (Nro),

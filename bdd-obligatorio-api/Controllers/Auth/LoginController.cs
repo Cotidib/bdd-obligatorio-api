@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using bdd_obligatorio_api.Contracts.Login;
 using bdd_obligatorio_api.Contracts.Register;
@@ -39,7 +40,7 @@ public class LoginController : ControllerBase
         {
             var user = new User(
                 registerRequest.Username,
-                registerRequest.Password
+                HashPassword(registerRequest.Password)
             );
 
             //TODO: Lógica del registro
@@ -66,12 +67,18 @@ public class LoginController : ControllerBase
     {
         try
         {
-            var user = await _authService.LoginUser(loginRequest.Username, loginRequest.Password);
+            var user = await _authService.LoginUser(loginRequest.Username);
             if (user != null)
             {
-                var tokenString = GenerateJSONWebToken(user);
-                Console.WriteLine(tokenString);
-                return Ok(new { token = tokenString });
+                if (VerifyPassword(loginRequest.Password, user.Password)){
+                    var tokenString = GenerateJSONWebToken(user);
+                    Console.WriteLine(tokenString);
+                    return Ok(new { token = tokenString });
+                }
+                else{
+                    return NotFound(new { mensaje = $"Contraseña incorrecta para el user: {loginRequest.Username}" });
+
+                }
             }
             else
             {
@@ -155,5 +162,19 @@ public class LoginController : ControllerBase
         {
             return StatusCode(500, new { mensaje = $"Error al obtener el UserId: {ex.Message}" });
         }
+    }
+    private string HashPassword(string password)
+    {
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+        }
+    }
+
+    // Función para verificar la contraseña hasheada
+    private bool VerifyPassword(string inputPassword, string hashedPassword)
+    {
+        return hashedPassword.Equals(HashPassword(inputPassword));
     }
 }
