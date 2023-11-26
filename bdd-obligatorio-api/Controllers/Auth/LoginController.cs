@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using bdd_obligatorio_api.Contracts.Login;
 using bdd_obligatorio_api.Contracts.Register;
@@ -21,7 +22,7 @@ public class LoginController : ControllerBase
         _authService = authService;
         _config = configuration;
     }
-    
+
     [Authorize]
     [HttpGet("/authmiddleware")]
     public IActionResult AuthMiddleware()
@@ -37,7 +38,6 @@ public class LoginController : ControllerBase
         try
         {
             var user = new User(
-                Guid.NewGuid(),
                 registerRequest.Username,
                 registerRequest.Password
             );
@@ -52,7 +52,7 @@ public class LoginController : ControllerBase
 
             return CreatedAtAction(
                 actionName: nameof(getUser),
-                routeValues: new { id = user.Id },
+                routeValues: new { id = user.Username },
                 value: response);
         }
         catch (Exception ex)
@@ -89,12 +89,12 @@ public class LoginController : ControllerBase
         }
     }
 
-    [HttpGet("{id:guid}")]
-    public IActionResult getUser(Guid id)
+    [HttpGet("{id}")]
+    public IActionResult getUser(string username)
     {
         try
         {
-            var user = _authService.GetUser(id);
+            var user = _authService.GetUser(username);
 
             if (user != null)
             {
@@ -102,7 +102,7 @@ public class LoginController : ControllerBase
             }
             else
             {
-                return NotFound(new { mensaje = $"No se encontró el usuario: {id}" });
+                return NotFound(new { mensaje = $"No se encontró el usuario: {username}" });
             }
         }
         catch (Exception ex)
@@ -116,12 +116,44 @@ public class LoginController : ControllerBase
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Secret"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-          _config["Jwt:Audience"],
-          null,
-          expires: DateTime.Now.AddMinutes(120),
-          signingCredentials: credentials);
-
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, userInfo.Username),
+        };
+        var token = new JwtSecurityToken
+        (
+            _config["Jwt:Issuer"],
+            _config["Jwt:Audience"],
+            claims,
+            expires: DateTime.Now.AddMinutes(120),
+            signingCredentials: credentials
+        );
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public IActionResult GetUserId()
+    {
+        try
+        {
+            // Obtener el principal del usuario desde el contexto HTTP
+            var principal = HttpContext.User;
+
+            // Buscar la claim con el tipo "UserId"
+            var userIdClaim = principal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+
+            if (userIdClaim != null)
+            {
+                var userId = userIdClaim.Value;
+                return Ok(new { UserId = userId });
+            }
+            else
+            {
+                return NotFound(new { mensaje = "No se encontró la claim de UserId en el token." });
+            }
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { mensaje = $"Error al obtener el UserId: {ex.Message}" });
+        }
     }
 }

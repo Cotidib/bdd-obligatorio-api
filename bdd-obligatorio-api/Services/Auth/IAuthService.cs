@@ -9,7 +9,7 @@ namespace bdd_obligatorio_api.Services
     public interface IAuthService
     {
         Task<bool> RegisterUser(User user);
-        Task<bool> GetUser(Guid id);
+        Task<bool> GetUser(string id);
         Task<User?> LoginUser(string Username, string Password);
     }
 }

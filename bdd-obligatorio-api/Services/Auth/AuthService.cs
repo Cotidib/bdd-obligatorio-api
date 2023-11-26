@@ -18,7 +18,7 @@ namespace bdd_obligatorio_api.Services.Auth
             _connectionString = configuration.GetConnectionString("Default");
         }
 
-        public async Task<bool> GetUser(Guid id)
+        public async Task<bool> GetUser(string username)
         {
             try
             {
@@ -29,8 +29,8 @@ namespace bdd_obligatorio_api.Services.Auth
                     using (var command = connection.CreateCommand())
                     {
                         //Parámetros para la consulta
-                        command.CommandText = "SELECT * FROM Users WHERE Id = @Id";
-                        command.Parameters.AddWithValue("@Id", id);
+                        command.CommandText = "SELECT * FROM Logins WHERE Logid = @Logid";
+                        command.Parameters.AddWithValue("@Logid", username);
                         //Ejecutar la consulta
                         using (var reader = await command.ExecuteReaderAsync())
                         {
@@ -63,10 +63,9 @@ namespace bdd_obligatorio_api.Services.Auth
 
                     using (var command = connection.CreateCommand())
                     {
-                        command.CommandText = "INSERT INTO Users (Id, Username, Password) VALUES (@Id, @Username, @Password)";
-                        command.Parameters.AddWithValue("@Id", user.Id);
-                        command.Parameters.AddWithValue("@Username", user.Username);
-                        command.Parameters.AddWithValue("@Password", user.Password);
+                        command.CommandText = "INSERT INTO Logins (Logid, Pwd) VALUES (@Logid, @Pwd)";
+                        command.Parameters.AddWithValue("@Logid", user.Username);
+                        command.Parameters.AddWithValue("@Pwd", user.Password);
                         int rowsAffected = await command.ExecuteNonQueryAsync();
                         return rowsAffected > 0;
 
@@ -90,17 +89,16 @@ namespace bdd_obligatorio_api.Services.Auth
 
                     using (var command = connection.CreateCommand())
                     {
-                        command.CommandText = "SELECT Id, Username, Password FROM Users WHERE Username = @Username AND Password = @Password";
-                        command.Parameters.AddWithValue("@Username", Username);
-                        command.Parameters.AddWithValue("@Password", Password);
+                        command.CommandText = "SELECT Logid, Pwd FROM Logins WHERE Logid = @Logid AND Pwd = @Pwd";
+                        command.Parameters.AddWithValue("@Logid", Username);
+                        command.Parameters.AddWithValue("@Pwd", Password);
                         using (var reader = await command.ExecuteReaderAsync())
                         {
                             if (await reader.ReadAsync())
                             {
                                 return new User(
-                                    reader.GetGuid(reader.GetOrdinal("Id")),
-                                    reader.GetString(reader.GetOrdinal("Username")),
-                                    reader.GetString(reader.GetOrdinal("Password"))
+                                    reader.GetString(reader.GetOrdinal("Logid")),
+                                    reader.GetString(reader.GetOrdinal("Pwd"))
                                 );
                             }
                             else
@@ -128,8 +126,8 @@ namespace bdd_obligatorio_api.Services.Auth
         {
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = "SELECT COUNT(*) FROM Users WHERE Username = @Username";
-                command.Parameters.AddWithValue("@Username", username);
+                command.CommandText = "SELECT COUNT(*) FROM Logins WHERE Logid = @Logid";
+                command.Parameters.AddWithValue("@Logid", username);
 
                 var result = await command.ExecuteScalarAsync();
                 return Convert.ToInt32(result) > 0;
