@@ -63,7 +63,7 @@ export class LoginScreenComponent {
         .subscribe({
           next: (res: any) => {
             console.log("logged in");
-            this.router.navigateByUrl('/signup-form');
+            this.router.navigateByUrl('/registered-form');
           },
           error: (err: any) => {
             console.log(err);

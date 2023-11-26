@@ -7,6 +7,7 @@ import { LoginScreenComponent } from './login-screen/login-screen.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './auth.guard';
+import { AgendaComponent } from './agenda/agenda.component';
 
 const routes: Routes = [
   { path: 'login', title: 'Autenticación', component: LoginScreenComponent },
@@ -23,6 +24,10 @@ const routes: Routes = [
   },
   {
     path: 'signup-form', title: 'Formulario Signup', component: SignupFormComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'agenda', title: 'Agendarse', component: AgendaComponent,
     canActivate: [AuthGuard],
   },
   { path: '**', title: 'No encontrado :(', component: PageNotFoundComponent },

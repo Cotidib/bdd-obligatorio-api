@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsService } from '../forms.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registered-form',
@@ -9,7 +10,7 @@ import { FormsService } from '../forms.service';
 
 export class RegisteredFormComponent {
 
-  constructor(private formsService: FormsService) { }
+  constructor(private formsService: FormsService, private router: Router) { }
 
   ci!: string;
   nombre!: string;
@@ -37,6 +38,10 @@ export class RegisteredFormComponent {
     }
     this.formsService.registeredForm(datosFormulario).subscribe({
       next: (response) => {
+        if (response && response.redirectUrl){
+          console.log(response.redirectUrl);
+          this.router.navigateByUrl(response.redirectUrl);
+        }
         console.log('Registro exitoso:', response);
         // Aquí puedes manejar la respuesta del backend, como redirigir a otra página, mostrar un mensaje, etc.
       },

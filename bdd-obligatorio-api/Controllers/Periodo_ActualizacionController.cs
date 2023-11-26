@@ -1,10 +1,12 @@
 using bdd_obligatorio_api.Models;
 using bdd_obligatorio_api.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace bdd_obligatorio_api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/periodoactual")]
     public class Periodo_ActualizacionController : ControllerBase
