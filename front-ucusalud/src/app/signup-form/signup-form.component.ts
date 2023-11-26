@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsService } from '../forms.service';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup-form',
@@ -13,7 +14,7 @@ export class SignupFormComponent {
 
   formulario: FormGroup;
 
-  constructor(private formsService: FormsService, private fb: FormBuilder) {
+  constructor(private formsService: FormsService, private fb: FormBuilder, private router: Router) {
     this.currentDate = new Date();
     this.formulario = this.fb.group({
       //ci: ['', Validators.required],
@@ -70,10 +71,14 @@ export class SignupFormComponent {
     }
 
     if(this.tieneCarneSalud == false || this.fechaVencimiento <= this.currentDate){
-      
+
     }
     this.formsService.signupForm(datosFormulario).subscribe({
       next: (response) => {
+        if (response && response.redirectUrl){
+          console.log(response.redirectUrl);
+          this.router.navigateByUrl(response.redirectUrl);
+        }
         console.log('Registro exitoso:', response);
       },
       error: (error) => {

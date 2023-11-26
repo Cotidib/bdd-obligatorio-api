@@ -40,8 +40,8 @@ export class FormsService {
     formData.append('nombre', datos.nombre);
     formData.append('apellido', datos.apellido);
     formData.append('fechaNacimiento', datos.fechaNacimiento.toString());
-    formData.append('tieneCarneSalud', datos.tieneCarneSalud.toString());
     if (datos.tieneCarneSalud) {
+      formData.append('tieneCarneSalud', datos.tieneCarneSalud.toString());
       formData.append('fechaVencimiento', datos.fechaVencimiento.toString());
       formData.append('fechaEmision', datos.fechaEmision.toString());
       formData.append('comprobante', datos.comprobante);

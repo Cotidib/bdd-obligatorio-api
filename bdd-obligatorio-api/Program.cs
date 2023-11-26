@@ -18,6 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddScoped<IAgendaRepository, AgendaRepository>();
+builder.Services.AddScoped<IPeriodoActualizacionRepository, Periodo_ActualizacionRepository>();
 builder.Services.AddTransient<JwtAuthenticationMiddleware>();
 
 
