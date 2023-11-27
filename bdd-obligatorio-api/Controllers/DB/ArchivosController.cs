@@ -48,7 +48,6 @@ public class ArchivosController : ControllerBase
                             return Ok(new { redirectUrl = "/signup-form", mensaje = "Funcionario inexistente. Por favor, complete el formulario de alta." });
                         }
 
-                        Console.WriteLine("ACA EMPIEZA LA TRANSACC: ");
                         using (var command = connection.CreateCommand())
                         {
                             command.CommandText = "UPDATE Funcionarios SET Nombre = @Nombre, Apellido = @Apellido, Fch_Nacimiento = @Fch_Nacimiento WHERE Ci = @Ci AND Logid = @Logid";
@@ -185,7 +184,6 @@ public class ArchivosController : ControllerBase
 
                     try
                     {
-                        Console.WriteLine("ACA EMPIEZA LA TRANSACC: ");
                         using (var command = connection.CreateCommand())
                         {
                             command.CommandText = "INSERT INTO Funcionarios (Ci, Nombre, Apellido, Email, Fch_Nacimiento, Direccion, Telefono, Logid) VALUES (@Ci, @Nombre, @Apellido, @Email, @Fch_Nacimiento, @Direccion, @Telefono, @Logid)";

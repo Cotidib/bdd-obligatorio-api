@@ -36,8 +36,6 @@ export class PeriodoGuard {
     const inicioPeriodo = new Date(periodo.fch_Inicio);
     const finPeriodo = new Date(periodo.fch_Fin);
 
-    console.log(inicioPeriodo, " ", finPeriodo, ",",currentDate);
-
     return (currentDate >= inicioPeriodo && currentDate <= finPeriodo);
   }
 }
