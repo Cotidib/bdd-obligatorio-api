@@ -25,7 +25,8 @@ namespace bdd_obligatorio_api.Repositories
                 {
                     Anio = reader.GetInt32("Anio"),
                     Semestre = reader.GetInt32("Semestre"),
-                    // Otros campos
+                    Fch_Inicio = reader.GetDateTime("Fch_Inicio"),
+                    Fch_Fin = reader.GetDateTime("Fch_Fin")
                 };
             }
 

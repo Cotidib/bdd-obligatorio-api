@@ -1,0 +1,33 @@
+.container {
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .card {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .card-header {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+
+  .btn-primary{
+    background-color: red;
+  }
+  
+  .btn-group {
+    margin-top: 10px;
+  }
+  
+  .btn {
+    margin-right: 10px;
+  }
+  

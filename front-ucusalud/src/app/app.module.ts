@@ -13,6 +13,9 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AuthinterceptorService } from './authinterceptor.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AgendaComponent } from './agenda/agenda.component';
+import { PeriodoFinalizadoComponent } from './periodo-finalizado/periodo-finalizado.component';
+import { CambiarPeriodoComponent } from './cambiar-periodo/cambiar-periodo.component';
+import { MessageBarComponent } from './message-bar/message-bar.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +26,9 @@ import { AgendaComponent } from './agenda/agenda.component';
     LoginScreenComponent,
     PageNotFoundComponent,
     AgendaComponent,
+    PeriodoFinalizadoComponent,
+    CambiarPeriodoComponent,
+    MessageBarComponent,
   ],
   imports: [
     BrowserModule,
