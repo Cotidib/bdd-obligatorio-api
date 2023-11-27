@@ -8,14 +8,14 @@ Se requiere una aplicación que permita mantener actualizada la información sob
 
 ## Implementación
 
-* Mediante una aplicación desarrollada con las tecnologías Express Node JS, C# y MySQL.
+* Mediante una aplicación desarrollada con las tecnologías Express Node JS, C#, Python y MySQL.
 * Registro y actualización de datos de los funcionarios.
   * Posibilidad de adjuntar el carnet de salud como archivos en formato JPG, JPEG o PDF.
   * Validación de existencia de los funcionarios en la base de datos (Con posibilidad de actualizar la información en caso afirmativo).
   * Sistema de agenda electrónica para los funcionarios cuyo carnet de salud no se encuentra vigente o no poseen.
   * Funcionalidad para especificar un período de actualización de carnet de salud.
     * En caso de encontrarse fuera del período, se bloquea la posibilidad de actualizar/registrar los datos.
-* Sistema de notificación diaria a usuarios con datos incompletos mediante correo electrónico.
+* Sistema de notificación diaria a usuarios que no han cargado su carnet de salud mediante correo electrónico.
 
 # Instrucciones
 1. Tener abierto `Docker Desktop` 
