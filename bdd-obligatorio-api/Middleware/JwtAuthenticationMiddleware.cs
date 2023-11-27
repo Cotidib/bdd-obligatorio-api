@@ -23,7 +23,6 @@ namespace bdd_obligatorio_api.Middleware
 
             if (path.Equals("/login") || path.Equals("/register"))
             {
-                Console.WriteLine("Se está accediendo a", path);
                 await next.Invoke(context);
                 return;
             }
