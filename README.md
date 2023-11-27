@@ -25,7 +25,8 @@ docker compose -f "docker-compose.yml" up -d --build
 ```
 3. Entrar a http://localhost:4200
 
-Nota: La UI demora unos segundos en levantar. Se puede ver en los Logs de su imagen en docker desktop.
+> [!NOTE]
+> La UI demora unos segundos en levantar. Se puede ver en los Logs de su imagen en docker desktop.
 
 #### Alumnos:
 Conde L., Dibueno C., Kucharski M.
