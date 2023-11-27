@@ -24,7 +24,7 @@ export class AgendaComponent {
       next: (response) => {
         console.log('Registro exitoso:', response);
         this.messageService.showMessage('Agenda exitosa.');
-
+        this.router.navigateByUrl('/');
       },
       error: (error) => {
         console.error('Error en el registro:', error);

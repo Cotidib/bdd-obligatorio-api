@@ -41,11 +41,11 @@ export class RegisteredFormComponent {
       next: (response) => {
         if (response && response.redirectUrl){
           console.log(response.redirectUrl);
-          this.messageService.showMessage('No te encuentras en nuestros datos. Por favor, llena el formulario de alta.');
+          this.messageService.showMessage(response.mensaje);
           this.router.navigateByUrl(response.redirectUrl);
         }
         else{
-          this.messageService.showMessage('Registro exitoso!');
+          this.messageService.showMessage(response.mensaje);
           console.log('Registro exitoso:', response);
         }
       },
