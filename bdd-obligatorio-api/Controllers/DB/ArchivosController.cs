@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using bdd_obligatorio_api.Contracts.DB;
-using bdd_obligatorio_api.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
@@ -36,20 +35,16 @@ public class ArchivosController : ControllerBase
                         bool funcionarioExist = false;
                         using (var command = connection.CreateCommand())
                         {
-                            //Parámetros para la consulta
                             command.CommandText = "SELECT * FROM Funcionarios WHERE Ci = @Ci";
                             command.Parameters.AddWithValue("@Ci", Int32.Parse(uploadRequest.ci));
                             command.Transaction = transaction;
-                            //Ejecutar la consulta
                             using (var reader = await command.ExecuteReaderAsync())
                             {
-                                // Verificar si hay filas en el resultado
                                 funcionarioExist = await reader.ReadAsync();
                             }
                         }
                         if (!funcionarioExist)
                         {
-                            // Redirigir al usuario a otro path
                             return Ok(new { redirectUrl = "/signup-form", mensaje = "Funcionario inexistente. Por favor, complete el formulario de alta." });
                         }
 
@@ -65,7 +60,6 @@ public class ArchivosController : ControllerBase
 
                             command.Transaction = transaction;
 
-                            //Ejecutar la consulta
                             await command.ExecuteNonQueryAsync();
                             Console.WriteLine("Datos Actualizados");
                         }
@@ -80,14 +74,11 @@ public class ArchivosController : ControllerBase
                             bool carnetExists = false;
                             using (var command = connection.CreateCommand())
                             {
-                                //Parámetros para la consulta
                                 command.CommandText = "SELECT * FROM Comprobante WHERE Cid = @Cid";
                                 command.Parameters.AddWithValue("@Cid", Int32.Parse(uploadRequest.ci));
                                 command.Transaction = transaction;
-                                //Ejecutar la consulta
                                 using (var reader = await command.ExecuteReaderAsync())
                                 {
-                                    // Verificar si hay filas en el resultado
                                     carnetExists = await reader.ReadAsync();
                                 }
                             }
@@ -95,7 +86,6 @@ public class ArchivosController : ControllerBase
                             {
                                 using (var command = connection.CreateCommand())
                                 {
-                                    //Convertir el archivo a un array de bytes
                                     byte[] fileBytes;
                                     using (var memoryStream = new MemoryStream())
                                     {
@@ -103,7 +93,6 @@ public class ArchivosController : ControllerBase
                                         fileBytes = memoryStream.ToArray();
                                     }
 
-                                    //Parámetros para la consulta
                                     command.CommandText = "INSERT INTO Comprobante (Cid, Nombre, Contenido, Tipo) VALUES (@Cid, @Nombre, @Contenido, @Tipo)";
                                     command.Parameters.AddWithValue("@Cid", uploadRequest.ci);
                                     command.Parameters.AddWithValue("@Nombre", comprobante.FileName);
@@ -111,22 +100,18 @@ public class ArchivosController : ControllerBase
                                     command.Parameters.AddWithValue("@Tipo", comprobante.ContentType);
                                     command.Transaction = transaction;
 
-                                    //Ejecutar la consulta
                                     await command.ExecuteNonQueryAsync();
                                     Console.WriteLine("Archivo subido");
                                 }
 
                                 using (var command = connection.CreateCommand())
                                 {
-
-                                    //Parámetros para la consulta
                                     command.CommandText = "INSERT INTO Carnet_Salud (Ci, Fch_Emision, Fch_Vencimiento, Comprobante) VALUES (@Ci, @Fch_Emision, @Fch_Vencimiento, @Comprobante)";
                                     command.Parameters.AddWithValue("@Ci", uploadRequest.ci);
                                     command.Parameters.AddWithValue("@Fch_Emision", uploadRequest.fechaEmision);
                                     command.Parameters.AddWithValue("@Fch_Vencimiento", uploadRequest.fechaVencimiento);
                                     command.Parameters.AddWithValue("@Comprobante", uploadRequest.ci);
                                     command.Transaction = transaction;
-                                    //Ejecutar la consulta
                                     await command.ExecuteNonQueryAsync();
                                 }
                             }
@@ -134,15 +119,12 @@ public class ArchivosController : ControllerBase
                             {
                                 using (var command = connection.CreateCommand())
                                 {
-                                    //Convertir el archivo a un array de bytes
                                     byte[] fileBytes;
                                     using (var memoryStream = new MemoryStream())
                                     {
                                         await comprobante.CopyToAsync(memoryStream);
                                         fileBytes = memoryStream.ToArray();
                                     }
-
-                                    //Parámetros para la consulta
                                     command.CommandText = "UPDATE Comprobante SET Nombre = @Nombre, Contenido = @Contenido, Tipo = @Tipo WHERE Cid = @Cid";
                                     command.Parameters.AddWithValue("@Cid", uploadRequest.ci);
                                     command.Parameters.AddWithValue("@Nombre", comprobante.FileName);
@@ -150,22 +132,18 @@ public class ArchivosController : ControllerBase
                                     command.Parameters.AddWithValue("@Tipo", comprobante.ContentType);
                                     command.Transaction = transaction;
 
-                                    //Ejecutar la consulta
                                     await command.ExecuteNonQueryAsync();
                                     Console.WriteLine("Archivo actualizado");
                                 }
 
                                 using (var command = connection.CreateCommand())
                                 {
-
-                                    //Parámetros para la consulta
                                     command.CommandText = "UPDATE Carnet_Salud SET Fch_Emision = @Fch_Emision, Fch_Vencimiento = @Fch_Vencimiento, Comprobante = @Comprobante WHERE Ci = @Ci";
                                     command.Parameters.AddWithValue("@Ci", uploadRequest.ci);
                                     command.Parameters.AddWithValue("@Fch_Emision", uploadRequest.fechaEmision);
                                     command.Parameters.AddWithValue("@Fch_Vencimiento", uploadRequest.fechaVencimiento);
                                     command.Parameters.AddWithValue("@Comprobante", uploadRequest.ci);
                                     command.Transaction = transaction;
-                                    //Ejecutar la consulta
                                     await command.ExecuteNonQueryAsync();
                                 }
                             }
@@ -224,7 +202,6 @@ public class ArchivosController : ControllerBase
 
                             command.Transaction = transaction;
 
-                            //Ejecutar la consulta
                             await command.ExecuteNonQueryAsync();
                             Console.WriteLine("Archivo subido");
                         }
@@ -237,38 +214,30 @@ public class ArchivosController : ControllerBase
                             }
                             using (var command = connection.CreateCommand())
                             {
-                                //Convertir el archivo a un array de bytes
                                 byte[] fileBytes;
                                 using (var memoryStream = new MemoryStream())
                                 {
                                     await comprobante.CopyToAsync(memoryStream);
                                     fileBytes = memoryStream.ToArray();
                                 }
-
-                                //Parámetros para la consulta
                                 command.CommandText = "INSERT INTO Comprobante (Cid, Nombre, Contenido, Tipo) VALUES (@Cid, @Nombre, @Contenido, @Tipo)";
                                 command.Parameters.AddWithValue("@Cid", signupRequest.ci);
                                 command.Parameters.AddWithValue("@Nombre", comprobante.FileName);
                                 command.Parameters.AddWithValue("@Contenido", fileBytes);
                                 command.Parameters.AddWithValue("@Tipo", comprobante.ContentType);
                                 command.Transaction = transaction;
-
-                                //Ejecutar la consulta
                                 await command.ExecuteNonQueryAsync();
                                 Console.WriteLine("Archivo subido");
                             }
 
                             using (var command = connection.CreateCommand())
                             {
-
-                                //Parámetros para la consulta
                                 command.CommandText = "INSERT INTO Carnet_Salud (Ci, Fch_Emision, Fch_Vencimiento, Comprobante) VALUES (@Ci, @Fch_Emision, @Fch_Vencimiento, @Comprobante)";
                                 command.Parameters.AddWithValue("@Ci", signupRequest.ci);
                                 command.Parameters.AddWithValue("@Fch_Emision", signupRequest.fechaEmision);
                                 command.Parameters.AddWithValue("@Fch_Vencimiento", signupRequest.fechaVencimiento);
                                 command.Parameters.AddWithValue("@Comprobante", signupRequest.ci);
                                 command.Transaction = transaction;
-                                //Ejecutar la consulta
                                 await command.ExecuteNonQueryAsync();
                             }
                         }
@@ -298,10 +267,8 @@ public class ArchivosController : ControllerBase
     {
         try
         {
-            // Obtener el principal del usuario desde el contexto HTTP
             var principal = HttpContext.User;
 
-            // Buscar la claim con el tipo "UserId"
             var userIdClaim = principal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
 
             if (userIdClaim != null)

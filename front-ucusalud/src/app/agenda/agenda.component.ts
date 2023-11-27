@@ -29,7 +29,6 @@ export class AgendaComponent {
       error: (error) => {
         console.error('Error en el registro:', error);
         this.messageService.showMessage('Error en la agenda. Intente más tarde.');
-        // Manejar el error, como mostrar un mensaje de error al usuario
       }
     });
   };
