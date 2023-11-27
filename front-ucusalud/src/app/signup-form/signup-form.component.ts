@@ -78,11 +78,11 @@ export class SignupFormComponent {
       next: (response) => {
         if (response && response.redirectUrl){
           console.log(response.redirectUrl);
-          this.messageService.showMessage('Registro exitoso. Por favor, agende una consulta.');
+          this.messageService.showMessage(response.mensaje);
           this.router.navigateByUrl(response.redirectUrl);
         }
         else{
-          this.messageService.showMessage('Registro exitoso.');
+          this.messageService.showMessage(response.mensaje);
           console.log('Registro exitoso:', response);
         }
       },

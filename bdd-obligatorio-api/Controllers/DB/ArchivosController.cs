@@ -11,6 +11,7 @@ public class ArchivosController : ControllerBase
 {
     private readonly MySqlConnection _mySqlConnection;
     private readonly string _connectionString;
+    private DateTime currentDate = DateTime.Now;
 
     public ArchivosController(MySqlConnection mySqlConnection, IConfiguration configuration)
     {
@@ -49,13 +50,13 @@ public class ArchivosController : ControllerBase
                         if (!funcionarioExist)
                         {
                             // Redirigir al usuario a otro path
-                            return Ok(new { redirectUrl = "/signup-form" });
+                            return Ok(new { redirectUrl = "/signup-form", mensaje = "Funcionario inexistente. Por favor, complete el formulario de alta." });
                         }
 
                         Console.WriteLine("ACA EMPIEZA LA TRANSACC: ");
                         using (var command = connection.CreateCommand())
                         {
-                            command.CommandText = "INSERT INTO Funcionarios (Ci, Nombre, Apellido, Fch_Nacimiento, Logid) VALUES (@Ci, @Nombre, @Apellido, @Fch_Nacimiento, @Logid)";
+                            command.CommandText = "UPDATE Funcionarios SET Nombre = @Nombre, Apellido = @Apellido, Fch_Nacimiento = @Fch_Nacimiento WHERE Ci = @Ci AND Logid = @Logid";
                             command.Parameters.AddWithValue("@Ci", Int32.Parse(uploadRequest.ci));
                             command.Parameters.AddWithValue("@Nombre", uploadRequest.nombre);
                             command.Parameters.AddWithValue("@Apellido", uploadRequest.apellido);
@@ -66,53 +67,116 @@ public class ArchivosController : ControllerBase
 
                             //Ejecutar la consulta
                             await command.ExecuteNonQueryAsync();
-                            Console.WriteLine("Archivo subido");
+                            Console.WriteLine("Datos Actualizados");
                         }
                         if (uploadRequest.tieneCarneSalud)
                         {
+                            if (uploadRequest.fechaVencimiento >= currentDate)
+                            {
+                                Console.WriteLine(uploadRequest.fechaVencimiento.ToString()," ",currentDate, " ", (uploadRequest.fechaVencimiento >= currentDate));
+                                await transaction.CommitAsync();
+                                return Ok(new { redirectUrl = "/agenda", mensaje = "Su carnet está vencido. Por favor, agende una consulta para el carnet de salud." });
+                            }
+                            bool carnetExists = false;
                             using (var command = connection.CreateCommand())
                             {
-                                //Convertir el archivo a un array de bytes
-                                byte[] fileBytes;
-                                using (var memoryStream = new MemoryStream())
+                                //Parámetros para la consulta
+                                command.CommandText = "SELECT * FROM Comprobante WHERE Cid = @Cid";
+                                command.Parameters.AddWithValue("@Cid", Int32.Parse(uploadRequest.ci));
+                                command.Transaction = transaction;
+                                //Ejecutar la consulta
+                                using (var reader = await command.ExecuteReaderAsync())
                                 {
-                                    await comprobante.CopyToAsync(memoryStream);
-                                    fileBytes = memoryStream.ToArray();
+                                    // Verificar si hay filas en el resultado
+                                    carnetExists = await reader.ReadAsync();
+                                }
+                            }
+                            if (!carnetExists)
+                            {
+                                using (var command = connection.CreateCommand())
+                                {
+                                    //Convertir el archivo a un array de bytes
+                                    byte[] fileBytes;
+                                    using (var memoryStream = new MemoryStream())
+                                    {
+                                        await comprobante.CopyToAsync(memoryStream);
+                                        fileBytes = memoryStream.ToArray();
+                                    }
+
+                                    //Parámetros para la consulta
+                                    command.CommandText = "INSERT INTO Comprobante (Cid, Nombre, Contenido, Tipo) VALUES (@Cid, @Nombre, @Contenido, @Tipo)";
+                                    command.Parameters.AddWithValue("@Cid", uploadRequest.ci);
+                                    command.Parameters.AddWithValue("@Nombre", comprobante.FileName);
+                                    command.Parameters.AddWithValue("@Contenido", fileBytes);
+                                    command.Parameters.AddWithValue("@Tipo", comprobante.ContentType);
+                                    command.Transaction = transaction;
+
+                                    //Ejecutar la consulta
+                                    await command.ExecuteNonQueryAsync();
+                                    Console.WriteLine("Archivo subido");
                                 }
 
-                                //Parámetros para la consulta
-                                command.CommandText = "INSERT INTO Comprobante (Cid, Nombre, Contenido, Tipo) VALUES (@Cid, @Nombre, @Contenido, @Tipo)";
-                                command.Parameters.AddWithValue("@Cid", uploadRequest.ci);
-                                command.Parameters.AddWithValue("@Nombre", comprobante.FileName);
-                                command.Parameters.AddWithValue("@Contenido", fileBytes);
-                                command.Parameters.AddWithValue("@Tipo", comprobante.ContentType);
-                                command.Transaction = transaction;
+                                using (var command = connection.CreateCommand())
+                                {
 
-                                //Ejecutar la consulta
-                                await command.ExecuteNonQueryAsync();
-                                Console.WriteLine("Archivo subido");
+                                    //Parámetros para la consulta
+                                    command.CommandText = "INSERT INTO Carnet_Salud (Ci, Fch_Emision, Fch_Vencimiento, Comprobante) VALUES (@Ci, @Fch_Emision, @Fch_Vencimiento, @Comprobante)";
+                                    command.Parameters.AddWithValue("@Ci", uploadRequest.ci);
+                                    command.Parameters.AddWithValue("@Fch_Emision", uploadRequest.fechaEmision);
+                                    command.Parameters.AddWithValue("@Fch_Vencimiento", uploadRequest.fechaVencimiento);
+                                    command.Parameters.AddWithValue("@Comprobante", uploadRequest.ci);
+                                    command.Transaction = transaction;
+                                    //Ejecutar la consulta
+                                    await command.ExecuteNonQueryAsync();
+                                }
                             }
-
-                            using (var command = connection.CreateCommand())
+                            else
                             {
+                                using (var command = connection.CreateCommand())
+                                {
+                                    //Convertir el archivo a un array de bytes
+                                    byte[] fileBytes;
+                                    using (var memoryStream = new MemoryStream())
+                                    {
+                                        await comprobante.CopyToAsync(memoryStream);
+                                        fileBytes = memoryStream.ToArray();
+                                    }
 
-                                //Parámetros para la consulta
-                                command.CommandText = "INSERT INTO Carnet_Salud (Ci, Fch_Emision, Fch_Vencimiento, Comprobante) VALUES (@Ci, @Fch_Emision, @Fch_Vencimiento, @Comprobante)";
-                                command.Parameters.AddWithValue("@Ci", uploadRequest.ci);
-                                command.Parameters.AddWithValue("@Fch_Emision", uploadRequest.fechaEmision);
-                                command.Parameters.AddWithValue("@Fch_Vencimiento", uploadRequest.fechaVencimiento);
-                                command.Parameters.AddWithValue("@Comprobante", uploadRequest.ci);
-                                command.Transaction = transaction;
-                                //Ejecutar la consulta
-                                await command.ExecuteNonQueryAsync();
+                                    //Parámetros para la consulta
+                                    command.CommandText = "UPDATE Comprobante SET Nombre = @Nombre, Contenido = @Contenido, Tipo = @Tipo WHERE Cid = @Cid";
+                                    command.Parameters.AddWithValue("@Cid", uploadRequest.ci);
+                                    command.Parameters.AddWithValue("@Nombre", comprobante.FileName);
+                                    command.Parameters.AddWithValue("@Contenido", fileBytes);
+                                    command.Parameters.AddWithValue("@Tipo", comprobante.ContentType);
+                                    command.Transaction = transaction;
+
+                                    //Ejecutar la consulta
+                                    await command.ExecuteNonQueryAsync();
+                                    Console.WriteLine("Archivo actualizado");
+                                }
+
+                                using (var command = connection.CreateCommand())
+                                {
+
+                                    //Parámetros para la consulta
+                                    command.CommandText = "UPDATE Carnet_Salud SET Fch_Emision = @Fch_Emision, Fch_Vencimiento = @Fch_Vencimiento, Comprobante = @Comprobante WHERE Ci = @Ci";
+                                    command.Parameters.AddWithValue("@Ci", uploadRequest.ci);
+                                    command.Parameters.AddWithValue("@Fch_Emision", uploadRequest.fechaEmision);
+                                    command.Parameters.AddWithValue("@Fch_Vencimiento", uploadRequest.fechaVencimiento);
+                                    command.Parameters.AddWithValue("@Comprobante", uploadRequest.ci);
+                                    command.Transaction = transaction;
+                                    //Ejecutar la consulta
+                                    await command.ExecuteNonQueryAsync();
+                                }
                             }
                         }
                         else
                         {
-                            return Ok(new { redirectUrl = "/agenda" });
+                            await transaction.CommitAsync();
+                            return Ok(new { redirectUrl = "/agenda", mensaje = "Datos actualizados. Por favor, agende una consulta para el carnet de salud." });
                         }
                         await transaction.CommitAsync();
-                        return Ok(new { mensaje = "Archivo subido con éxito" });
+                        return Ok(new { mensaje = "Datos actualizados con éxito" });
                     }
                     catch (Exception ex)
                     {
@@ -166,6 +230,11 @@ public class ArchivosController : ControllerBase
                         }
                         if (signupRequest.tieneCarneSalud)
                         {
+                            if (signupRequest.fechaVencimiento >= currentDate)
+                            {
+                                await transaction.CommitAsync();
+                                return Ok(new { redirectUrl = "/agenda", mensaje = "Su carnet está vencido. Por favor, agende una consulta para el carnet de salud." });
+                            }
                             using (var command = connection.CreateCommand())
                             {
                                 //Convertir el archivo a un array de bytes
@@ -206,7 +275,7 @@ public class ArchivosController : ControllerBase
                         else
                         {
                             await transaction.CommitAsync();
-                            return Ok(new { redirectUrl = "/agenda" });
+                            return Ok(new { redirectUrl = "/agenda", mensaje = "Datos actualizados. Por favor, agende una consulta para el carnet de salud." });
                         }
                         await transaction.CommitAsync();
                         return Ok(new { mensaje = "Archivo subido con éxito" });
