@@ -29,13 +29,10 @@ namespace bdd_obligatorio_api.Services.Auth
 
                     using (var command = connection.CreateCommand())
                     {
-                        //Parámetros para la consulta
                         command.CommandText = "SELECT * FROM Logins WHERE Logid = @Logid";
                         command.Parameters.AddWithValue("@Logid", username);
-                        //Ejecutar la consulta
                         using (var reader = await command.ExecuteReaderAsync())
                         {
-                            // Verificar si hay filas en el resultado
                             return await reader.ReadAsync();
                         }
                     }

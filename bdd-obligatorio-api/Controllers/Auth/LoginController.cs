@@ -28,7 +28,6 @@ public class LoginController : ControllerBase
     [HttpGet("/authmiddleware")]
     public IActionResult AuthMiddleware()
     {
-        // Si se llega a este punto, la autenticación fue exitosa
         return Ok(new { Autenticado = true, Status = 200 });
     }
 
@@ -43,7 +42,6 @@ public class LoginController : ControllerBase
                 HashPassword(registerRequest.Password)
             );
 
-            //TODO: Lógica del registro
             _authService.RegisterUser(user);
 
             var response = new RegisterResponse(
@@ -142,10 +140,8 @@ public class LoginController : ControllerBase
     {
         try
         {
-            // Obtener el principal del usuario desde el contexto HTTP
             var principal = HttpContext.User;
 
-            // Buscar la claim con el tipo "UserId"
             var userIdClaim = principal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
 
             if (userIdClaim != null)
@@ -172,7 +168,6 @@ public class LoginController : ControllerBase
         }
     }
 
-    // Función para verificar la contraseña hasheada
     private bool VerifyPassword(string inputPassword, string hashedPassword)
     {
         return hashedPassword.Equals(HashPassword(inputPassword));

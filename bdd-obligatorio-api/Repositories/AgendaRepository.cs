@@ -19,12 +19,10 @@ namespace bdd_obligatorio_api.Repositories
             using var command = new MySqlCommand("INSERT INTO Agenda (Ci, Fch_Agenda) VALUES (@Ci, @Fch_Agenda)", _connection);
             command.Parameters.AddWithValue("@Ci", agenda.Ci);
             command.Parameters.AddWithValue("@Fch_Agenda", agenda.Fch_Agenda);
-            // Otros campos
 
             command.ExecuteNonQuery();
 
             _connection.Close();
         }
-        // Otros métodos necesarios
     }
 }
