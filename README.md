@@ -8,7 +8,7 @@ Se requiere una aplicación que permita mantener actualizada la información sob
 
 ## Implementación
 
-* Mediante una aplicación desarrollada con las tecnologías TypeScript, C#, Python y MySQL.
+* Mediante una aplicación desarrollada con las tecnologías Angular, TypeScript, C#, Python y MySQL.
 * Registro y actualización de datos de los funcionarios.
   * Posibilidad de adjuntar el carnet de salud como archivos en formato JPG, JPEG o PDF.
   * Validación de existencia de los funcionarios en la base de datos (Con posibilidad de actualizar la información en caso afirmativo).
