@@ -50,5 +50,11 @@ services:
     #Specify Environment Variables for the Api Service
     environment: 
       - DBHOST=database
+  bdd-front:
+    build:
+      context: front-ucusalud
+      target: builder
+    ports:
+      - 4200:4200
 volumes:
     datafiles:
