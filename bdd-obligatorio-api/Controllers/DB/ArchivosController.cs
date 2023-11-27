@@ -65,9 +65,8 @@ public class ArchivosController : ControllerBase
                         }
                         if (uploadRequest.tieneCarneSalud)
                         {
-                            if (uploadRequest.fechaVencimiento >= currentDate)
+                            if (uploadRequest.fechaVencimiento <= currentDate)
                             {
-                                Console.WriteLine(uploadRequest.fechaVencimiento.ToString()," ",currentDate, " ", (uploadRequest.fechaVencimiento >= currentDate));
                                 await transaction.CommitAsync();
                                 return Ok(new { redirectUrl = "/agenda", mensaje = "Su carnet está vencido. Por favor, agende una consulta para el carnet de salud." });
                             }
@@ -207,7 +206,7 @@ public class ArchivosController : ControllerBase
                         }
                         if (signupRequest.tieneCarneSalud)
                         {
-                            if (signupRequest.fechaVencimiento >= currentDate)
+                            if (signupRequest.fechaVencimiento <= currentDate)
                             {
                                 await transaction.CommitAsync();
                                 return Ok(new { redirectUrl = "/agenda", mensaje = "Su carnet está vencido. Por favor, agende una consulta para el carnet de salud." });

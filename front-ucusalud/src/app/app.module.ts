@@ -16,6 +16,7 @@ import { AgendaComponent } from './agenda/agenda.component';
 import { PeriodoFinalizadoComponent } from './periodo-finalizado/periodo-finalizado.component';
 import { CambiarPeriodoComponent } from './cambiar-periodo/cambiar-periodo.component';
 import { MessageBarComponent } from './message-bar/message-bar.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { MessageBarComponent } from './message-bar/message-bar.component';
     PeriodoFinalizadoComponent,
     CambiarPeriodoComponent,
     MessageBarComponent,
+    LogoutComponent,
   ],
   imports: [
     BrowserModule,

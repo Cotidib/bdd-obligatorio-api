@@ -28,6 +28,10 @@ export class LoginService {
     console.log("Se ha guardado el token",authResult.token);
   }
 
+  public removeSession(){
+    localStorage.removeItem('id_token');
+  }
+
   obtainAuthStatus() {
     return this.http.get<any>('http://localhost:5000/authmiddleware')
       .pipe(
