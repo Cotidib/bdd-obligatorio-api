@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using bdd_obligatorio_api.Models;
 using Microsoft.IdentityModel.Tokens;
@@ -28,13 +29,10 @@ namespace bdd_obligatorio_api.Services.Auth
 
                     using (var command = connection.CreateCommand())
                     {
-                        //Parámetros para la consulta
                         command.CommandText = "SELECT * FROM Logins WHERE Logid = @Logid";
                         command.Parameters.AddWithValue("@Logid", username);
-                        //Ejecutar la consulta
                         using (var reader = await command.ExecuteReaderAsync())
                         {
-                            // Verificar si hay filas en el resultado
                             return await reader.ReadAsync();
                         }
                     }
@@ -79,7 +77,7 @@ namespace bdd_obligatorio_api.Services.Auth
             }
         }
 
-        public async Task<User?> LoginUser(string Username, string Password)
+        public async Task<User?> LoginUser(string Username)
         {
             try
             {
@@ -89,9 +87,9 @@ namespace bdd_obligatorio_api.Services.Auth
 
                     using (var command = connection.CreateCommand())
                     {
-                        command.CommandText = "SELECT Logid, Pwd FROM Logins WHERE Logid = @Logid AND Pwd = @Pwd";
+                        command.CommandText = "SELECT * FROM Logins WHERE Logid = @Logid";
                         command.Parameters.AddWithValue("@Logid", Username);
-                        command.Parameters.AddWithValue("@Pwd", Password);
+
                         using (var reader = await command.ExecuteReaderAsync())
                         {
                             if (await reader.ReadAsync())

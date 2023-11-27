@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../login.service';
 import { catchError, throwError } from 'rxjs';
+import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-login-screen',
@@ -14,7 +15,7 @@ export class LoginScreenComponent {
   username: string = '';
   password: string = '';
 
-  constructor(private loginService: LoginService, private router: Router) { }
+  constructor(private loginService: LoginService, private router: Router, private messageService: MessageService) { }
 
   showRegisterForm() {
     this.username = '';
@@ -36,12 +37,14 @@ export class LoginScreenComponent {
       this.loginService.register(this.username, this.password)
         .pipe(
           catchError((error) => {
+            this.messageService.showMessage('Error al registrarse!');
             return throwError(() => error);
           })
         )
         .subscribe({
           next: (res: any) => {
             console.log("Usuario registrado!");
+            this.messageService.showMessage('Usuario '+this.username+' registrado!');
             this.router.navigateByUrl('/');
           },
           error: (err: any) => {
@@ -57,13 +60,15 @@ export class LoginScreenComponent {
       this.loginService.login(this.username, this.password)
         .pipe(
           catchError((error) => {
+            this.messageService.showMessage('Error al ingresar!');
             return throwError(() => error);
           })
         )
         .subscribe({
           next: (res: any) => {
             console.log("logged in");
-            this.router.navigateByUrl('/signup-form');
+            this.messageService.showMessage('Bienvenido '+this.username);
+            this.router.navigateByUrl('/registered-form');
           },
           error: (err: any) => {
             console.log(err);

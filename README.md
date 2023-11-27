@@ -1,3 +1,12 @@
+# Levantar Proyecto
+Tener abierto Docker Desktop
+Usar el comando:
+```
+docker compose -f "docker-compose.yml" up -d --build 
+```
+
+Nota: La UI demora unos segundos en levantar. Se puede ver en los Logs de su imagen en docker desktop.
+
 # bdd-obligatorio-api
 Test Request: GET http://localhost:5000/WeatherForecast
 

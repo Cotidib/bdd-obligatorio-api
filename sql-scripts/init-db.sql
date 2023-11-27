@@ -1,21 +1,3 @@
-CREATE TABLE obligatoriodb.Weather (
-	wid INT NOT NULL,
-	name VARCHAR(30) NOT NULL,
-	PRIMARY KEY (wid)
-);
-
-INSERT INTO obligatoriodb.Weather (wid, name) VALUES
-	(1, 'Freezing'),
-	(2, 'Bracing'),
-	(3, 'Chilly'),
-	(4, 'Cool'),
-	(5, 'Mild'),
-	(6, 'Warm'),
-	(7, 'Balmy'),
-	(8, 'Hot'),
-	(9, 'Sweltering'),
-	(10, 'Scorching');
-
 CREATE TABLE obligatoriodb.Logins (
 	Logid VARCHAR(30) NOT NULL,
 	Pwd VARCHAR(100) NOT NULL,
@@ -36,7 +18,7 @@ CREATE TABLE obligatoriodb.Funcionarios (
 );
 
 CREATE TABLE obligatoriodb.Agenda (
-	Nro INT NOT NULL,
+	Nro INT AUTO_INCREMENT,
 	Ci INT NOT NULL,
 	Fch_Agenda DATETIME NOT NULL,
 	PRIMARY KEY (Nro),
@@ -60,10 +42,13 @@ CREATE TABLE obligatoriodb.Carnet_Salud (
 	FOREIGN KEY (Ci) REFERENCES Funcionarios(Ci)
 );
 
-
 CREATE TABLE obligatoriodb.Periodos_Actualizacion (
 	Anio INT NOT NULL,
 	Semestre INT NOT NULL,
 	Fch_Inicio DATE NOT NULL,
 	Fch_Fin DATE NOT NULL
 );
+
+INSERT INTO Periodos_Actualizacion (Anio, Semestre, Fch_Inicio, Fch_Fin)
+VALUES
+(2023, 2, '2023-11-01', '2023-11-15');

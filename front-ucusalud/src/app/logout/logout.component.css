@@ -1,0 +1,14 @@
+.custom-button {
+    background-color: red; 
+    color: #fff; 
+    border: 1px solid black; 
+    padding: 4px 10px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+  }
+  
+  .custom-button:hover {
+    background-color: tomato; 
+    border-color: red; 
+  }
+  

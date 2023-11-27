@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using bdd_obligatorio_api.Contracts.Login;
 using bdd_obligatorio_api.Contracts.Register;
@@ -27,7 +28,6 @@ public class LoginController : ControllerBase
     [HttpGet("/authmiddleware")]
     public IActionResult AuthMiddleware()
     {
-        // Si se llega a este punto, la autenticación fue exitosa
         return Ok(new { Autenticado = true, Status = 200 });
     }
 
@@ -39,10 +39,9 @@ public class LoginController : ControllerBase
         {
             var user = new User(
                 registerRequest.Username,
-                registerRequest.Password
+                HashPassword(registerRequest.Password)
             );
 
-            //TODO: Lógica del registro
             _authService.RegisterUser(user);
 
             var response = new RegisterResponse(
@@ -66,12 +65,18 @@ public class LoginController : ControllerBase
     {
         try
         {
-            var user = await _authService.LoginUser(loginRequest.Username, loginRequest.Password);
+            var user = await _authService.LoginUser(loginRequest.Username);
             if (user != null)
             {
-                var tokenString = GenerateJSONWebToken(user);
-                Console.WriteLine(tokenString);
-                return Ok(new { token = tokenString });
+                if (VerifyPassword(loginRequest.Password, user.Password)){
+                    var tokenString = GenerateJSONWebToken(user);
+                    Console.WriteLine(tokenString);
+                    return Ok(new { token = tokenString });
+                }
+                else{
+                    return NotFound(new { mensaje = $"Contraseña incorrecta para el user: {loginRequest.Username}" });
+
+                }
             }
             else
             {
@@ -135,10 +140,8 @@ public class LoginController : ControllerBase
     {
         try
         {
-            // Obtener el principal del usuario desde el contexto HTTP
             var principal = HttpContext.User;
 
-            // Buscar la claim con el tipo "UserId"
             var userIdClaim = principal?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
 
             if (userIdClaim != null)
@@ -155,5 +158,18 @@ public class LoginController : ControllerBase
         {
             return StatusCode(500, new { mensaje = $"Error al obtener el UserId: {ex.Message}" });
         }
+    }
+    private string HashPassword(string password)
+    {
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+        }
+    }
+
+    private bool VerifyPassword(string inputPassword, string hashedPassword)
+    {
+        return hashedPassword.Equals(HashPassword(inputPassword));
     }
 }

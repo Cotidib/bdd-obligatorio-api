@@ -23,7 +23,6 @@ namespace bdd_obligatorio_api.Middleware
 
             if (path.Equals("/login") || path.Equals("/register"))
             {
-                Console.WriteLine("Se está accediendo a", path);
                 await next.Invoke(context);
                 return;
             }
@@ -48,27 +47,14 @@ namespace bdd_obligatorio_api.Middleware
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    // Puedes agregar otras validaciones según tus necesidades
                 };
 
                 SecurityToken validatedToken;
                 ClaimsPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
 
-                // Aquí puedes acceder a la información del usuario a través de 'principal'
                 context.Items["user"] = principal;
 
-                // Mostrar información en la consola
                 Console.WriteLine("Nombre de usuario: " + principal.Identity.Name);
-
-                // Mostrar todas las identidades y reclamaciones
-                foreach (var identity in principal.Identities)
-                {
-                    Console.WriteLine("Identity: " + identity.Name);
-                    foreach (var claim in identity.Claims)
-                    {
-                        Console.WriteLine($"   {claim.Type}: {claim.Value}");
-                    }
-                }
 
                 await next.Invoke(context);
             }

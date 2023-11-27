@@ -1,0 +1,24 @@
+<div class="container">
+    <h2>Cambiar Periodo</h2>
+    <form>
+      <label for="anio">Año:</label>
+      <input type="number" id="anio" [(ngModel)]="anio" name="anio" required>
+  
+      <label for="semestre">Semestre:</label>
+      <input type="number" id="semestre" [(ngModel)]="semestre" name="semestre" required>
+  
+      <label for="fchInicio">Fecha de Inicio:</label>
+      <input type="date" id="fchInicio" [(ngModel)]="fchInicio" name="fchInicio" required>
+  
+      <label for="fchFin">Fecha de Fin:</label>
+      <input type="date" id="fchFin" [(ngModel)]="fchFin" name="fchFin" required>
+  
+      <button type="button" (click)="cambiarPeriodo()">Cambiar Periodo</button>
+      <button routerLink="/dashboard" class="btn btn-primary" type="button" (click)="cambiarPeriodo()">Volver al dashboard</button>
+
+    </form>
+    <div *ngIf="mensajeRespuesta" class="alert alert-info mt-3">
+        {{ mensajeRespuesta }}
+    </div>
+  </div>
+  
