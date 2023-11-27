@@ -1,1 +1,1 @@
-* * * * * /usr/bin/python3 /scheduled_email.py
+0 0 * * * /usr/bin/python3 /scheduled_email.py
