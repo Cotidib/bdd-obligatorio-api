@@ -16,7 +16,7 @@ namespace bdd_obligatorio_api.Repositories
         {
             _connection.Open();
 
-            using var command = new MySqlCommand("SELECT * FROM Periodos_Actualizacion ORDER BY Año DESC, Semestre DESC LIMIT 1", _connection);
+            using var command = new MySqlCommand("SELECT * FROM Periodos_Actualizacion ORDER BY Anio DESC, Semestre DESC LIMIT 1", _connection);
 
             using var reader = command.ExecuteReader();
             if (reader.Read())
@@ -25,7 +25,8 @@ namespace bdd_obligatorio_api.Repositories
                 {
                     Anio = reader.GetInt32("Anio"),
                     Semestre = reader.GetInt32("Semestre"),
-                    // Otros campos
+                    Fch_Inicio = reader.GetDateTime("Fch_Inicio"),
+                    Fch_Fin = reader.GetDateTime("Fch_Fin")
                 };
             }
 
@@ -38,7 +39,7 @@ namespace bdd_obligatorio_api.Repositories
         {
             _connection.Open();
 
-            using var command = new MySqlCommand("UPDATE Periodos_Actualizacion SET Fch_Inicio = @Fch_Inicio, Fch_Fin = @Fch_Fin WHERE Año = @Anio AND Semestre = @Semestre", _connection);
+            using var command = new MySqlCommand("UPDATE Periodos_Actualizacion SET Fch_Inicio = @Fch_Inicio, Fch_Fin = @Fch_Fin WHERE Anio = @Anio AND Semestre = @Semestre", _connection);
             command.Parameters.AddWithValue("@Anio", periodo.Anio);
             command.Parameters.AddWithValue("@Semestre", periodo.Semestre);
             command.Parameters.AddWithValue("@Fch_Inicio", periodo.Fch_Inicio);

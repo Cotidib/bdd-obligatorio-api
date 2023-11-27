@@ -19,7 +19,7 @@ public class ArchivosController : ControllerBase
     }
     [Authorize]
     [HttpPost("uploadFile")]
-    public async Task<IActionResult> SubirArchivo([FromForm] UploadRequest uploadRequest, [FromForm] IFormFile comprobante)
+    public async Task<IActionResult> SubirArchivo([FromForm] UploadRequest uploadRequest, [FromForm] IFormFile? comprobante)
     {
         try
         {
@@ -107,6 +107,10 @@ public class ArchivosController : ControllerBase
                                 await command.ExecuteNonQueryAsync();
                             }
                         }
+                        else
+                        {
+                            return Ok(new { redirectUrl = "/agenda" });
+                        }
                         await transaction.CommitAsync();
                         return Ok(new { mensaje = "Archivo subido con éxito" });
                     }
@@ -127,7 +131,7 @@ public class ArchivosController : ControllerBase
 
     [Authorize]
     [HttpPost("uploadSignup")]
-    public async Task<IActionResult> uploadSignup([FromForm] SignupRequest signupRequest, [FromForm] IFormFile comprobante)
+    public async Task<IActionResult> uploadSignup([FromForm] SignupRequest signupRequest, [FromForm] IFormFile? comprobante)
     {
         try
         {
@@ -198,6 +202,11 @@ public class ArchivosController : ControllerBase
                                 //Ejecutar la consulta
                                 await command.ExecuteNonQueryAsync();
                             }
+                        }
+                        else
+                        {
+                            await transaction.CommitAsync();
+                            return Ok(new { redirectUrl = "/agenda" });
                         }
                         await transaction.CommitAsync();
                         return Ok(new { mensaje = "Archivo subido con éxito" });

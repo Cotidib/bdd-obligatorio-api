@@ -6,9 +6,8 @@ using System;
 
 namespace bdd_obligatorio_api.Controllers
 {
-    [Authorize]
     [ApiController]
-    [Route("api/periodoactual")]
+    [Route("[controller]")]
     public class Periodo_ActualizacionController : ControllerBase
     {
         private readonly IPeriodoActualizacionRepository _periodoActualizacionRepository;
@@ -18,7 +17,8 @@ namespace bdd_obligatorio_api.Controllers
             _periodoActualizacionRepository = periodoActualizacionRepository;
         }
 
-        [HttpGet]
+        [Authorize]
+        [HttpGet("/periodoactual")]
         public IActionResult GetPeriodoActual()
         {
             try
@@ -39,13 +39,14 @@ namespace bdd_obligatorio_api.Controllers
             }
         }
 
-        [HttpPut]
-        public IActionResult UpdatePeriodoActual([FromBody] Periodo_Actualizacion periodo)
+        [Authorize]
+        [HttpPut("/periodoactual")]
+        public IActionResult UpdatePeriodoActual([FromForm] Periodo_Actualizacion periodo)
         {
             try
             {
                 _periodoActualizacionRepository.UpdatePeriodoActual(periodo);
-                return Ok();
+                return Ok(periodo);
             }
             catch (Exception ex)
             {

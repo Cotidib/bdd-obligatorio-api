@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsService } from '../forms.service';
 import { Router } from '@angular/router';
+import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-registered-form',
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
 
 export class RegisteredFormComponent {
 
-  constructor(private formsService: FormsService, private router: Router) { }
+  constructor(private formsService: FormsService, private router: Router, private messageService: MessageService) { }
 
   ci!: string;
   nombre!: string;
@@ -40,14 +41,17 @@ export class RegisteredFormComponent {
       next: (response) => {
         if (response && response.redirectUrl){
           console.log(response.redirectUrl);
+          this.messageService.showMessage('No te encuentras en nuestros datos. Por favor, llena el formulario de alta.');
           this.router.navigateByUrl(response.redirectUrl);
         }
-        console.log('Registro exitoso:', response);
-        // Aquí puedes manejar la respuesta del backend, como redirigir a otra página, mostrar un mensaje, etc.
+        else{
+          this.messageService.showMessage('Registro exitoso!');
+          console.log('Registro exitoso:', response);
+        }
       },
       error: (error) => {
+        this.messageService.showMessage('Error al enviar el formulario!');
         console.error('Error en el registro:', error);
-        // Manejar el error, como mostrar un mensaje de error al usuario
       }
     });
   };

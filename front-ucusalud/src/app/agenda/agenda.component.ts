@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsService } from '../forms.service';
 import { Router } from '@angular/router';
+import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-agenda',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./agenda.component.css']
 })
 export class AgendaComponent {
-  constructor(private formsService: FormsService, private router: Router) { }
+  constructor(private formsService: FormsService, private router: Router, private messageService: MessageService) { }
 
   ci!: string;
   fechaAgenda!: Date;
@@ -22,10 +23,12 @@ export class AgendaComponent {
     this.formsService.agendaForm(datosFormulario).subscribe({
       next: (response) => {
         console.log('Registro exitoso:', response);
-        // Aquí puedes manejar la respuesta del backend, como redirigir a otra página, mostrar un mensaje, etc.
+        this.messageService.showMessage('Agenda exitosa.');
+
       },
       error: (error) => {
         console.error('Error en el registro:', error);
+        this.messageService.showMessage('Error en la agenda. Intente más tarde.');
         // Manejar el error, como mostrar un mensaje de error al usuario
       }
     });

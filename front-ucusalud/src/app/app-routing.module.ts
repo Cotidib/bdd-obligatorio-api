@@ -8,11 +8,14 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './auth.guard';
 import { AgendaComponent } from './agenda/agenda.component';
+import { PeriodoFinalizadoComponent } from './periodo-finalizado/periodo-finalizado.component';
+import { PeriodoGuard } from './periodo.guard';
+import { CambiarPeriodoComponent } from './cambiar-periodo/cambiar-periodo.component';
 
 const routes: Routes = [
   { path: 'login', title: 'Autenticación', component: LoginScreenComponent },
   {
-    path: '', redirectTo: '/login', pathMatch: 'full',
+    path: '', redirectTo: '/dashboard', pathMatch: 'full'
   },
   {
     path: 'dashboard', title: 'Dashboard', component: DashboardComponent,
@@ -20,15 +23,22 @@ const routes: Routes = [
   },
   {
     path: 'registered-form', title: 'Formulario', component: RegisteredFormComponent,
-    canActivate: [AuthGuard],
+    canActivate: [PeriodoGuard],
   },
   {
     path: 'signup-form', title: 'Formulario Signup', component: SignupFormComponent,
-    canActivate: [AuthGuard],
+    canActivate: [PeriodoGuard],
   },
   {
     path: 'agenda', title: 'Agendarse', component: AgendaComponent,
+    canActivate: [PeriodoGuard],
+  },
+  {
+    path: 'cambiar-periodo', title: 'Cambiar periodo', component: CambiarPeriodoComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'periodofinalizado', title: 'Finalizado :(', component: PeriodoFinalizadoComponent,
   },
   { path: '**', title: 'No encontrado :(', component: PageNotFoundComponent },
 ];
